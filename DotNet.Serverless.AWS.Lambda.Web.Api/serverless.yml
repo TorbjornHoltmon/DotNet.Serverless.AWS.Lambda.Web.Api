@@ -1,0 +1,16 @@
+﻿service: ServerlessNet50Api
+
+provider:
+  name: aws
+  region: eu-central-1
+
+package:
+  artifact: deploy.zip
+
+functions:
+  api:
+    handler: ServerlessDotnetApi::ServerlessDotnetApi.LambdaEntryPoint::FunctionHandlerAsync
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
