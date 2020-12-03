@@ -28,7 +28,13 @@ jobs:
         dotnet tool install -g Amazon.Lambda.Tools
     - name: Build
       working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
-      run: dotnet lambda package --configuration release --framework net5.0 --package-type image --msbuild-parameters "-p:PublishReadyToRun=true --self-contained false" --docker-host-build-output-dir ./bin/Release/net5.0/linux-x64/publish --region eu-central-1 --output-package deploy.zip
+      run: dotnet lambda package --configuration release --framework net5.0 --package-type image --msbuild-parameters "-p:PublishReadyToRun=true --self-contained false" --docker-host-build-output-dir ./bin/Release/net5.0/linux-x64/publish --region eu-central-1 --output-package release/deploy.zip
+    - name: Check
+      run: ls
+    - name: Check2
+      run: |
+        cd release
+        ls
     - name: serverless deploy
       working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
       run: npx serverless deploy
