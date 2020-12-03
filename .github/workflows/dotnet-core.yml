@@ -1,0 +1,42 @@
+name: .NET Deploy Serverless
+
+on:
+  push:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    name: build and deploy
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@main
+      with:
+        dotnet-version: 5.0.100
+    - name: Install dependencies
+      working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
+      run: |
+        dotnet restore
+        dotnet tool install -g Amazon.Lambda.Tools
+    - name: Build
+      working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
+      run: dotnet lambda package --configuration release --framework net5.0 --package-type image --msbuild-parameters "-p:PublishReadyToRun=true --self-contained false" --docker-host-build-output-dir ./bin/Release/net5.0/linux-x64/publish --region eu-central-1 --output-package deploy.zip  
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1.4.3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: serverless deploy
+      working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
+      run: |
+        cd ServerlessDotnetApi
+        npx serverless deploy
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
