@@ -30,9 +30,12 @@ jobs:
       working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
       run: dotnet lambda package --configuration release --framework net5.0 --package-type image --msbuild-parameters "-p:PublishReadyToRun=true --self-contained false" --docker-host-build-output-dir ./bin/Release/net5.0/linux-x64/publish --region eu-central-1 --output-package release/deploy.zip
     - name: Check
-      run: ls
+      run: |
+        cd DotNet.Serverless.AWS.Lambda.Web.Api
+        ls
     - name: Check2
       run: |
+        cd DotNet.Serverless.AWS.Lambda.Web.Api
         cd release
         ls
     - name: serverless deploy
