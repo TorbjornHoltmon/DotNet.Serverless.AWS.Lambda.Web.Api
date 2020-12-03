@@ -31,9 +31,7 @@ jobs:
       run: dotnet lambda package --configuration release --framework net5.0 --package-type image --msbuild-parameters "-p:PublishReadyToRun=true --self-contained false" --docker-host-build-output-dir ./bin/Release/net5.0/linux-x64/publish --region eu-central-1 --output-package deploy.zip
     - name: serverless deploy
       working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
-      run: |
-        cd ServerlessDotnetApi
-        npx serverless deploy
+      run: npx serverless deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
