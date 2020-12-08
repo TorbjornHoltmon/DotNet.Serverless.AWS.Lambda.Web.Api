@@ -1,46 +1,30 @@
 name: .NET Deploy Serverless
 
 on:
-  push:
-    branches: [ main ]
+    push:
+        branches: [main]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
 
 jobs:
-  build-and-deploy:
-    name: build and deploy
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@main
-      with:
-        dotnet-version: 5.0.100
-    - uses: actions/setup-node@v2-beta
-      with:
-        node-version: '12'
-        check-latest: true
-    - name: Install dependencies
-      working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
-      run: |
-        dotnet restore
-        dotnet tool install -g Amazon.Lambda.Tools
-    - name: Build
-      working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
-      run: dotnet lambda package --configuration release --framework net5.0 --package-type image --msbuild-parameters "-p:PublishReadyToRun=true --self-contained false" --docker-host-build-output-dir ./bin/Release/net5.0/linux-x64/publish --region eu-central-1 --output-package release/deploy.zip
-    - name: Check
-      run: |
-        cd DotNet.Serverless.AWS.Lambda.Web.Api
-        ls
-    - name: Check2
-      run: |
-        cd DotNet.Serverless.AWS.Lambda.Web.Api
-        cd release
-        ls
-    - name: serverless deploy
-      working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
-      run: npx serverless deploy
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    build-and-deploy:
+        name: build and deploy
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Setup .NET Core
+              uses: actions/setup-dotnet@main
+              with:
+                  dotnet-version: 5.0.100
+            - name: Install dependencies
+              working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
+              run: |
+                  dotnet restore
+                  dotnet tool install -g Amazon.Lambda.Tools
+            - name: Build
+              working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
+              run: dotnet publish -p:PublishReadyToRun=true --self-contained false --runtime linux-x64 --output bin/Release/net5.0/linux-x64/publish
+            - name: serverless deploy
+              working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
+              run: dotnet lambda deploy-serverless --aws-access-key-id ${{ secrets.AWS_ACCESS_KEY_ID }} --aws-secret-key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
