@@ -14,7 +14,7 @@
                         "/lambda-entrypoint.sh"
                     ],
                     "Command": [
-                        "dotnetTest::dotnetTest.LambdaEntryPoint::FunctionHandlerAsync"
+                        "DotNet.Serverless.AWS.Lambda.Web.Api::DotNet.Serverless.AWS.Lambda.Web.Api.LambdaEntryPoint::FunctionHandlerAsync"
                     ]
                 },
                 "ImageUri": "",
