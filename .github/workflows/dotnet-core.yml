@@ -24,17 +24,7 @@ jobs:
                   dotnet tool install -g Amazon.Lambda.Tools
             - name: Build
               working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
-              run: dotnet publish \
-                -p:PublishReadyToRun=true \
-                --self-contained false \
-                --runtime linux-x64 \
-                --output bin/Release/net5.0/linux-x64/publish
+              run: dotnet publish -p:PublishReadyToRun=true --self-contained false --runtime linux-x64 --output bin/Release/net5.0/linux-x64/publish
             - name: serverless deploy
               working-directory: DotNet.Serverless.AWS.Lambda.Web.Api
-              run: dotnet lambda deploy-serverless \
-                --aws-access-key-id ${{ secrets.AWS_ACCESS_KEY_ID }} \
-                --aws-secret-key ${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-                --region eu-central-1 \
-                --s3-bucket serverless-dotnet-deployment \
-                --template serverless.template \
-                --stack-name dotnet-serverless
+              run: dotnet lambda deploy-serverless --aws-access-key-id ${{ secrets.AWS_ACCESS_KEY_ID }} --aws-secret-key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --region eu-central-1 --s3-bucket serverless-dotnet-deployment --template serverless.template --stack-name dotnet-serverless
