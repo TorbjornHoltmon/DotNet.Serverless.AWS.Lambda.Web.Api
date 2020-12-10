@@ -35,7 +35,6 @@ jobs:
                       ${{ runner.os }}-node-
 
             - name: Restore dotnet dependencies
-              working-directory: Typescript.ClientGenerator
               run: dotnet restore
 
             - name: Build typescript client
