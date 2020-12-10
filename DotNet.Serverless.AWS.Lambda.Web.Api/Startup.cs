@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotNet.Serverless.AWS.Lambda.Web.Api.Bogus.CompanyBogus;
+using DotNet.Serverless.AWS.Lambda.Web.Api.Bogus.DepartmentBogus;
+using DotNet.Serverless.AWS.Lambda.Web.Api.Bogus.EmployeeBogus;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,7 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 
 namespace DotNet.Serverless.AWS.Lambda.Web.Api
 {
@@ -27,20 +31,24 @@ namespace DotNet.Serverless.AWS.Lambda.Web.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddOpenApiDocument(config =>
             {
-                c.SwaggerDoc("v1",
-                    new OpenApiInfo {Title = "DotNet.Serverless.AWS.Lambda.Web.Api", Version = "v1"});
+                config.Title = "Dotnet Api";
+                config.Description = "A Dotnet Api to demonstrate the serverless";
             });
+            services.AddSingleton<ICompanyBogus, CompanyBogus>();
+            services.AddSingleton<IEmployeeBogus, EmployeeBogus>();
+            services.AddSingleton<IDepartmentBogus, DepartmentBogus>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseDeveloperExceptionPage();
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "DotNet.Serverless.AWS.Lambda.Web.Api v1"));
+            
+            app.UseOpenApi();
+            
+            app.UseSwaggerUi3(settings => { settings.Path = ""; });
 
             app.UseHttpsRedirection();
 

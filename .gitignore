@@ -4,5 +4,11 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 
+node_modules
+
+Api-Typescript-Client/dist
+
+Api-Typescript-Client/src/index.ts
+
 .idea
 .vscode
