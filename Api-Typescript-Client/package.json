@@ -1,10 +1,10 @@
 {
-    "name": "@torbjornholtmon/generated-pet-store-client",
+    "name": "@torbjornholtmon/aws-lambda-client",
     "version": "1.3.0",
     "description": "",
-    "main": "dist/petStoreClient.js",
-    "module": "dist/petStoreClient.mjs",
-    "typings": "dist/petStoreClient.d.ts",
+    "main": "dist/awsLambdaClient.js",
+    "module": "dist/awsLambdaClient.mjs",
+    "typings": "dist/awsLambdaClient.d.ts",
     "scripts": {
         "build": "rollup -c"
     },
@@ -13,7 +13,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/TorbjornHoltmon/Generate-Typescript-Client-From-OpenApi"
+        "url": "https://github.com/TorbjornHoltmon/DotNet.Serverless.AWS.Lambda.Web.Api"
     },
     "publishConfig": {
         "registry": "https://npm.pkg.github.com/"
