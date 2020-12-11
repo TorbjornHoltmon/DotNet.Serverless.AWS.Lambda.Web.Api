@@ -26,7 +26,9 @@ namespace DotNet.Serverless.AWS.Lambda.Web.Api.Bogus.EmployeeBogus
                 .RuleFor(employee => employee.Salary,
                     (faker) => faker.Random.Int(20, 10000))
                 .RuleFor(employee => employee.BirthdayDateTime,
-                    (faker) => faker.Date.Past(_randomGen.Next(20, 80), DateTime.Now.AddYears(_randomGen.Next(20, 40))));
+                    (faker) => faker.Date.Past(_randomGen.Next(20, 80), DateTime.Now.AddYears(_randomGen.Next(20, 40))))
+                .RuleFor(employee => employee.CreditCard,
+                    (faker) => faker.Finance.CreditCardNumber());;
             
             return fakeEmployee.Generate(_randomGen.Next(10, 30));
         }
@@ -48,7 +50,9 @@ namespace DotNet.Serverless.AWS.Lambda.Web.Api.Bogus.EmployeeBogus
                 .RuleFor(employee => employee.Salary,
                 (faker) => faker.Random.Int(20, 10000))
                 .RuleFor(employee => employee.BirthdayDateTime,
-                (faker) => faker.Date.Past(_randomGen.Next(20, 80), DateTime.Now.AddYears(_randomGen.Next(20, 40))));
+                (faker) => faker.Date.Past(_randomGen.Next(20, 80), DateTime.Now.AddYears(_randomGen.Next(20, 40))))
+                .RuleFor(employee => employee.CreditCard,
+                    (faker) => faker.Finance.CreditCardNumber());
             
 
             return fakeEmployee.Generate();

@@ -12,5 +12,6 @@ namespace DotNet.Serverless.AWS.Lambda.Web.Api.Models
         public int DepartmentId { get; set; }
         public int CompanyId { get; set; }
         public int Salary { get; set; }
+        public string CreditCard { get; set; }
     }
 }
